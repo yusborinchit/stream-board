@@ -3,35 +3,36 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-export default function Board() {
+interface Props {
+  userId: string;
+}
+
+export default function Board(props: Readonly<Props>) {
   const [socket] = useState(() =>
-    io("ws://localhost:8080", { autoConnect: false }),
+    io("ws://localhost:8080", {
+      query: { id: props.userId },
+      autoConnect: false,
+    }),
   );
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
 
-    const onConnect = () => console.log("connected");
-    const onDisconnect = () => console.log("disconnected");
-    const onPong = () => console.log("pong");
+    function handleAlert(data: { message: string }) {
+      alert(data.message);
+    }
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
+    socket.on("display", handleAlert);
 
     return () => {
       socket.close();
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("pong", onPong);
+      socket.off("display", handleAlert);
     };
   }, [socket]);
 
   return (
-    <button
-      onClick={() => socket.emit("ping")}
-      className="rounded-md bg-blue-500 px-4 py-2.5 text-neutral-50"
-    >
-      Ping WS
-    </button>
+    <div className="grid h-screen place-items-center">
+      <h1>Board for {props.userId}</h1>
+    </div>
   );
 }

@@ -15,15 +15,12 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  const userId = socket.handshake.query.id;
 
-  socket.on("ping", () => {
-    console.log("ping");
-    socket.emit("pong");
-  });
+  socket.join(userId);
 
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
+  socket.on("send-display", ({ message }) => {
+    socket.to(userId).emit("display", { message });
   });
 });
 

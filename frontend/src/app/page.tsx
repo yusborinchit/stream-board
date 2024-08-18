@@ -1,5 +1,5 @@
 import AccountButton from "~/components/auth/account-button";
-import Board from "~/components/board";
+import ButtonDeck from "~/components/button-deck";
 import { getServerAuthSession } from "~/server/auth";
 
 export default async function HomePage() {
@@ -12,7 +12,12 @@ export default async function HomePage() {
         <h1>Your Board</h1>
         <AccountButton user={user} />
       </header>
-      <Board />
+      {user && (
+        <>
+          <a href={`/board/${user.id}`}>Go to your board</a>
+          <ButtonDeck id={user.id} />
+        </>
+      )}
     </main>
   );
 }
