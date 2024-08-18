@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "./db";
-import { files, videos } from "./db/schema";
+import { audios, files, videos } from "./db/schema";
 
 export async function insertFile(userId: string, name: string, url: string) {
   const [insertedFile] = await db
@@ -26,9 +26,21 @@ export async function insertVideo(fileId: string) {
   };
 }
 
+export async function insertAudio(fileId: string) {
+  const [insertedAudio] = await db
+    .insert(audios)
+    .values({ fileId })
+    .returning({ audioId: audios.fileId });
+
+  return {
+    error: !insertedAudio,
+    audioId: insertedAudio?.audioId,
+  };
+}
+
 export async function getVideos(userId: string) {
   return await db
-    .select({
+    .selectDistinct({
       fileId: files.id,
       fileName: files.name,
       fileUrl: files.url,
@@ -37,4 +49,15 @@ export async function getVideos(userId: string) {
     })
     .from(files)
     .innerJoin(videos, eq(files.userId, userId));
+}
+
+export async function getAudios(userId: string) {
+  return await db
+    .selectDistinct({
+      fileId: files.id,
+      fileName: files.name,
+      fileUrl: files.url,
+    })
+    .from(files)
+    .innerJoin(audios, eq(files.userId, userId));
 }

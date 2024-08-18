@@ -5,6 +5,18 @@ import { io } from "socket.io-client";
 
 interface Props {
   userId: string;
+  videos: {
+    fileId: string;
+    fileName: string;
+    fileUrl: string;
+    isFullscreen: boolean;
+    isRandom: boolean;
+  }[];
+  audios: {
+    fileId: string;
+    fileName: string;
+    fileUrl: string;
+  }[];
 }
 
 export default function Deck(props: Readonly<Props>) {
@@ -31,24 +43,15 @@ export default function Deck(props: Readonly<Props>) {
 
   return (
     <main className="grid h-screen grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 p-4">
-      <button
-        onClick={handleSendAlert("John")}
-        className="rounded-md bg-blue-500 px-4 py-2.5 text-neutral-50"
-      >
-        Send Alert for John
-      </button>
-      <button
-        onClick={handleSendAlert("Camila")}
-        className="rounded-md bg-blue-500 px-4 py-2.5 text-neutral-50"
-      >
-        Send Alert for Camila
-      </button>
-      <button
-        onClick={handleSendAlert("Santiago")}
-        className="rounded-md bg-blue-500 px-4 py-2.5 text-neutral-50"
-      >
-        Send Alert for Santiago
-      </button>
+      {props.videos.map((video) => (
+        <button
+          key={video.fileId}
+          onClick={handleSendAlert(video.fileName)}
+          className="rounded bg-blue-500 p-4"
+        >
+          {video.fileName}
+        </button>
+      ))}
     </main>
   );
 }

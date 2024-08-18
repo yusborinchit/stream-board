@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Deck from "~/components/deck";
 import { getServerAuthSession } from "~/server/auth";
+import { getAudios, getVideos } from "~/server/queries";
 
 interface Props {
   params: {
@@ -13,5 +14,10 @@ export default async function DeckPage(props: Readonly<Props>) {
 
   if (!session || session.user.id !== props.params.userId) redirect("/");
 
-  return <Deck userId={props.params.userId} />;
+  const [videos, audios] = await Promise.all([
+    await getVideos(session.user.id),
+    await getAudios(session.user.id),
+  ]);
+
+  return <Deck userId={props.params.userId} videos={videos} audios={audios} />;
 }
