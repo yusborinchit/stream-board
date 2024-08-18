@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import Board from "~/components/board";
+import Deck from "~/components/deck";
 import { getServerAuthSession } from "~/server/auth";
 
 interface Props {
@@ -8,10 +8,10 @@ interface Props {
   };
 }
 
-export default async function BoardPage(props: Readonly<Props>) {
+export default async function DeckPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
 
   if (!session || session.user.id !== props.params.userId) redirect("/");
 
-  return <Board userId={props.params.userId} />;
+  return <Deck userId={props.params.userId} />;
 }

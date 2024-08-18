@@ -31,8 +31,11 @@ export default function Board(props: Readonly<Props>) {
   }, [socket]);
 
   return (
-    <div className="grid h-screen place-items-center">
-      <h1>Board for {props.userId}</h1>
-    </div>
+    <main className="grid h-screen place-items-center">
+      <h1>
+        <span className="text-neutral-500">Board for</span>{" "}
+        <span className="font-bold">{props.userId}</span>
+      </h1>
+    </main>
   );
 }

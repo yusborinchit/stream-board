@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
   pgTableCreator,
@@ -100,3 +101,61 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+
+export const files = createTable(
+  "file",
+  {
+    id: varchar("id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: varchar("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    name: varchar("name", { length: 255 }).notNull(),
+    url: varchar("url", { length: 255 }).notNull(),
+  },
+  (file) => ({
+    userIdIdx: index("file_user_id_idx").on(file.userId),
+  }),
+);
+
+export const filesRelations = relations(files, ({ one }) => ({
+  user: one(users, { fields: [files.userId], references: [users.id] }),
+}));
+
+export const videos = createTable(
+  "video",
+  {
+    fileId: varchar("file_id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .references(() => files.id),
+    isFullscreen: boolean("is_fullscreen").notNull().default(false),
+    isRandom: boolean("is_random").notNull().default(true),
+  },
+  (video) => ({
+    fileIdIdx: index("video_file_id_idx").on(video.fileId),
+  }),
+);
+
+export const videosRelations = relations(videos, ({ one }) => ({
+  file: one(files, { fields: [videos.fileId], references: [files.id] }),
+}));
+
+export const audios = createTable(
+  "audio",
+  {
+    fileId: varchar("file_id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .references(() => files.id),
+  },
+  (audio) => ({
+    fileIdIdx: index("audio_file_id_idx").on(audio.fileId),
+  }),
+);
+
+export const audiosRelations = relations(audios, ({ one }) => ({
+  file: one(files, { fields: [audios.fileId], references: [files.id] }),
+}));

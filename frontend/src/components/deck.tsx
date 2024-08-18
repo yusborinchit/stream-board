@@ -4,20 +4,19 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 interface Props {
-  id: string;
+  userId: string;
 }
 
-export default function ButtonDeck(props: Readonly<Props>) {
+export default function Deck(props: Readonly<Props>) {
   const [socket] = useState(() =>
     io("ws://localhost:8080", {
-      query: { id: props.id },
+      query: { id: props.userId },
       autoConnect: false,
     }),
   );
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
-
     return () => {
       socket.close();
     };
@@ -31,7 +30,7 @@ export default function ButtonDeck(props: Readonly<Props>) {
   }
 
   return (
-    <>
+    <main className="grid h-screen grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 p-4">
       <button
         onClick={handleSendAlert("John")}
         className="rounded-md bg-blue-500 px-4 py-2.5 text-neutral-50"
@@ -50,6 +49,6 @@ export default function ButtonDeck(props: Readonly<Props>) {
       >
         Send Alert for Santiago
       </button>
-    </>
+    </main>
   );
 }
