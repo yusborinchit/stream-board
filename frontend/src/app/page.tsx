@@ -17,8 +17,6 @@ export default async function HomePage() {
     await getAudios(session.user.id),
   ]);
 
-  console.log(videos);
-
   return (
     <>
       <header className="mx-auto flex max-w-screen-md items-center justify-between gap-4 p-4">

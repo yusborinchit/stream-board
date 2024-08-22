@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { getServerAuthSession } from "~/server/auth";
@@ -22,8 +21,6 @@ export const ourFileRouter = {
       if (videoResult.error || !videoResult.videoId)
         throw new UploadThingError("Failed to insert video");
 
-      redirect("/");
-
       return { videoId: videoResult.videoId, uploadedBy: metadata.userId };
     }),
   audioUploader: f({ audio: { maxFileSize: "8MB" } })
@@ -40,8 +37,6 @@ export const ourFileRouter = {
       const audioResult = await insertAudio(fileResult.fileId);
       if (audioResult.error || !audioResult.audioId)
         throw new UploadThingError("Failed to insert video");
-
-      redirect("/");
 
       return { audioId: audioResult.audioId, uploadedBy: metadata.userId };
     }),
