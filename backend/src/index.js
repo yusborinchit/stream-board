@@ -19,8 +19,8 @@ io.on("connection", (socket) => {
 
   socket.join(userId);
 
-  socket.on("send-display", ({ message }) => {
-    socket.to(userId).emit("display", { message });
+  socket.on("send-display", ({ trigger }) => {
+    socket.to(userId).emit("display", { trigger });
   });
 });
 
