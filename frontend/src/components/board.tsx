@@ -1,26 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { createWebSocket } from "~/utils/ws";
+import { type Trigger } from "./deck";
+import TriggerDisplay from "./trigger-display";
+
+export type TriggerWithId = Trigger & { id: string };
 
 interface Props {
   userId: string;
 }
 
 export default function Board(props: Readonly<Props>) {
-  const [socket] = useState(() =>
-    io("ws://localhost:8080", {
-      query: { id: props.userId },
-      autoConnect: false,
-    }),
-  );
+  const [triggers, setTriggers] = useState<TriggerWithId[]>([]);
+  const [socket] = useState(() => createWebSocket(props.userId));
+
+  function handleAlert({ trigger }: { trigger: Trigger }) {
+    setTriggers((prev) => [...prev, { ...trigger, id: crypto.randomUUID() }]);
+  }
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
-
-    function handleAlert(data: { message: string }) {
-      alert(data.message);
-    }
 
     socket.on("display", handleAlert);
 
@@ -31,11 +31,16 @@ export default function Board(props: Readonly<Props>) {
   }, [socket]);
 
   return (
-    <main className="grid h-screen place-items-center">
-      <h1>
-        <span className="text-neutral-500">Board for</span>{" "}
-        <span className="font-bold">{props.userId}</span>
-      </h1>
+    <main className="relative grid h-screen place-items-center overflow-hidden">
+      {triggers.map((trigger) => (
+        <TriggerDisplay
+          key={trigger.id}
+          onEnded={() =>
+            setTriggers((p) => p.filter((t) => t.fileId !== trigger.id))
+          }
+          trigger={trigger}
+        />
+      ))}
     </main>
   );
 }

@@ -1,17 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { createWebSocket } from "~/utils/ws";
 
 export interface Video {
+  type: "video";
   fileId: string;
   fileName: string;
+  position: string;
+  size: string;
   fileUrl: string;
   isFullscreen: boolean;
   isRandom: boolean;
 }
 
 export interface Audio {
+  type: "audio";
   fileId: string;
   fileName: string;
   fileUrl: string;
@@ -27,16 +31,11 @@ interface Props {
 
 export default function Deck(props: Readonly<Props>) {
   const triggers = [...props.audios, ...props.videos];
-
-  const [socket] = useState(() =>
-    io("ws://localhost:8080", {
-      query: { id: props.userId },
-      autoConnect: false,
-    }),
-  );
+  const [socket] = useState(() => createWebSocket(props.userId));
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
+
     return () => {
       socket.close();
     };
@@ -45,7 +44,7 @@ export default function Deck(props: Readonly<Props>) {
   function handleSendAlert(trigger: Trigger) {
     return () => {
       if (!socket.connected) return;
-      socket.emit("send-display", { message: `hello ${trigger.fileName}` });
+      socket.emit("send-display", { trigger });
     };
   }
 

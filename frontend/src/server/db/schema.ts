@@ -131,7 +131,8 @@ export const videos = createTable(
       .notNull()
       .primaryKey()
       .references(() => files.id),
-    position: varchar("position", { length: 7 }).default("100;100"),
+    position: varchar("position", { length: 255 }).default("0;0"),
+    size: varchar("size", { length: 255 }).default("250;250"),
     isFullscreen: boolean("is_fullscreen").notNull().default(false),
     isRandom: boolean("is_random").notNull().default(true),
   },

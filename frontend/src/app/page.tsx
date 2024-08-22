@@ -1,11 +1,9 @@
 import { redirect } from "next/navigation";
 import SignOutButton from "~/components/auth/sign-out-button";
-import UploadAudioButton from "~/components/upload-audio-button";
-import UploadVideoButton from "~/components/upload-video-button";
+import UploadAudioButton from "~/components/upload-thing/upload-audio-button";
+import UploadVideoButton from "~/components/upload-thing/upload-video-button";
 import { getServerAuthSession } from "~/server/auth";
 import { getAudios, getVideos } from "~/server/queries";
-
-export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const session = await getServerAuthSession();
@@ -28,6 +26,7 @@ export default async function HomePage() {
         </div>
       </header>
       <main className="mx-auto flex max-w-screen-md flex-col gap-8 p-4">
+        {/* Links */}
         <section>
           <a
             href={`/board/${session.user.id}`}
@@ -50,6 +49,7 @@ export default async function HomePage() {
             </span>
           </a>
         </section>
+        {/* Videos */}
         <section>
           <header className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <h2 className="text-3xl font-bold tracking-tight">
@@ -77,6 +77,7 @@ export default async function HomePage() {
             </ul>
           )}
         </section>
+        {/* Audios */}
         <section>
           <header className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <h2 className="text-3xl font-bold tracking-tight">

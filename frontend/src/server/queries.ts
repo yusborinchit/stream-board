@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "./db";
 import { audios, files, videos } from "./db/schema";
 
@@ -41,9 +41,12 @@ export async function insertAudio(fileId: string) {
 export async function getVideos(userId: string) {
   return await db
     .selectDistinct({
+      type: sql`'video'`.as("type"),
       fileId: files.id,
       fileName: files.name,
       fileUrl: files.url,
+      position: videos.position,
+      size: videos.size,
       isFullscreen: videos.isFullscreen,
       isRandom: videos.isRandom,
     })
@@ -54,6 +57,7 @@ export async function getVideos(userId: string) {
 export async function getAudios(userId: string) {
   return await db
     .selectDistinct({
+      type: sql`'audio'`.as("type"),
       fileId: files.id,
       fileName: files.name,
       fileUrl: files.url,
