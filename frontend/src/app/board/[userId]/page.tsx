@@ -11,7 +11,7 @@ interface Props {
 export default async function BoardPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
 
-  if (!session || session.user.id !== props.params.userId) redirect("/");
+  if (!session || session.user.id !== props.params.userId) redirect("/sign-in");
 
   return <Board userId={props.params.userId} />;
 }

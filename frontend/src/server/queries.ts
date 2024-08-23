@@ -1,4 +1,7 @@
+"use server";
+
 import { eq, sql } from "drizzle-orm";
+import { type Video } from "~/components/deck";
 import { db } from "./db";
 import { audios, files, videos } from "./db/schema";
 
@@ -64,4 +67,45 @@ export async function getAudios(userId: string) {
     })
     .from(files)
     .innerJoin(audios, eq(files.userId, userId));
+}
+
+export async function getVideoById(videoId: string) {
+  const [video] = await db
+    .select({
+      type: sql`'video'`.as("type"),
+      fileId: files.id,
+      userId: files.userId,
+      fileName: files.name,
+      fileUrl: files.url,
+      position: videos.position,
+      size: videos.size,
+      isFullscreen: videos.isFullscreen,
+      isRandom: videos.isRandom,
+    })
+    .from(files)
+    .innerJoin(videos, eq(files.id, videoId));
+
+  return video;
+}
+
+export async function updateVideo(video: Video) {
+  const updateFileQuery = db
+    .update(files)
+    .set({
+      name: video.fileName,
+      url: video.fileUrl,
+    })
+    .where(eq(files.id, video.fileId));
+
+  const updateVideoQuery = db
+    .update(videos)
+    .set({
+      position: video.position,
+      size: video.size,
+      isFullscreen: video.isFullscreen,
+      isRandom: video.isRandom,
+    })
+    .where(eq(videos.fileId, video.fileId));
+
+  await Promise.all([updateFileQuery, updateVideoQuery]);
 }

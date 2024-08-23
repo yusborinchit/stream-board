@@ -19,10 +19,6 @@ export default function Board(props: Readonly<Props>) {
     setTriggers((prev) => [...prev, { ...trigger, id: crypto.randomUUID() }]);
   }
 
-  function handleVideoEnded(triggerId: string) {
-    return () => setTriggers((p) => p.filter((t) => t.fileId !== triggerId));
-  }
-
   useEffect(() => {
     if (!socket.connected) socket.connect();
 
@@ -33,6 +29,10 @@ export default function Board(props: Readonly<Props>) {
       socket.off("display", handleAlert);
     };
   }, [socket]);
+
+  function handleVideoEnded(triggerId: string) {
+    return () => setTriggers((p) => p.filter((t) => t.fileId !== triggerId));
+  }
 
   return (
     <main className="relative grid h-screen place-items-center overflow-hidden">

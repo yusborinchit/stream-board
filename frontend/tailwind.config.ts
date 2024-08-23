@@ -11,5 +11,5 @@ export default withUt({
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 }) satisfies Config;

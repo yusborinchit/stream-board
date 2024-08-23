@@ -27,8 +27,6 @@ export default function VideoDisplay(props: Readonly<Props>) {
     event.currentTarget.style.display = "none";
   }
 
-  console.log(x, y);
-
   return (
     <video
       src={props.video.fileUrl}
