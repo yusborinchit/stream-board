@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createWebSocket } from "~/utils/ws";
 import { type Trigger } from "./deck";
-import TriggerDisplay from "./trigger-display";
+import TriggerDisplay from "./trigger-display/trigger-display";
 
 export type TriggerWithId = Trigger & { id: string };
 
@@ -17,6 +17,10 @@ export default function Board(props: Readonly<Props>) {
 
   function handleAlert({ trigger }: { trigger: Trigger }) {
     setTriggers((prev) => [...prev, { ...trigger, id: crypto.randomUUID() }]);
+  }
+
+  function handleVideoEnded(triggerId: string) {
+    return () => setTriggers((p) => p.filter((t) => t.fileId !== triggerId));
   }
 
   useEffect(() => {
@@ -35,9 +39,7 @@ export default function Board(props: Readonly<Props>) {
       {triggers.map((trigger) => (
         <TriggerDisplay
           key={trigger.id}
-          onEnded={() =>
-            setTriggers((p) => p.filter((t) => t.fileId !== trigger.id))
-          }
+          onEnded={handleVideoEnded(trigger.id)}
           trigger={trigger}
         />
       ))}
