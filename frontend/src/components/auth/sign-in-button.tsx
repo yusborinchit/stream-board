@@ -9,7 +9,7 @@ export default function SignInButton() {
 
   async function handleSignIn() {
     setIsLoading(true);
-    await signIn("twitch", { callbackUrl: "/" });
+    await signIn("twitch", { callbackUrl: "/profile" });
     setIsLoading(false);
   }
 

@@ -5,6 +5,18 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "static-cdn.jtvnw.net",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+    unoptimized: true,
+  },
+};
 
 export default config;

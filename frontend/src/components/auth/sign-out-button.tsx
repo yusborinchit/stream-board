@@ -1,10 +1,15 @@
 "use client";
 
-import { LoaderCircle, LogOut } from "lucide-react";
+import { type User } from "next-auth";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 
-export default function SignOutButton() {
+interface Props {
+  user: User;
+}
+
+export default function SignOutButton(props: Readonly<Props>) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSignOut() {
@@ -17,19 +22,16 @@ export default function SignOutButton() {
     <button
       onClick={handleSignOut}
       disabled={isLoading}
-      className="flex w-full items-center gap-2 rounded bg-gradient-to-t from-neutral-800 to-neutral-600 px-4 py-2.5 font-semibold disabled:opacity-50"
+      aria-label="Sign Out"
+      className="size-12 rounded-full disabled:opacity-50"
     >
-      {isLoading ? (
-        <>
-          <LoaderCircle className="size-5 animate-spin" />
-          <span>Loading...</span>
-        </>
-      ) : (
-        <>
-          <LogOut className="size-5" />
-          <span>Sign Out</span>
-        </>
-      )}
+      <Image
+        src={props.user.image!}
+        alt={`${props.user.name} avatar`}
+        width={48}
+        height={48}
+        className="h-full w-full rounded-full object-cover"
+      />
     </button>
   );
 }

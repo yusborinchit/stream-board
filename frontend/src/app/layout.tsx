@@ -1,10 +1,7 @@
 import "~/styles/globals.css";
 
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { extractRouterConfig } from "uploadthing/server";
-import { ourFileRouter } from "./api/uploadthing/core";
 
 export const metadata: Metadata = {
   title: "Stream Board | Enhance your Stream with us",
@@ -18,10 +15,7 @@ interface Props {
 export default function RootLayout(props: Readonly<Props>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="bg-neutral-950 text-neutral-50">
-        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        {props.children}
-      </body>
+      <body className="bg-neutral-950 text-neutral-50">{props.children}</body>
     </html>
   );
 }

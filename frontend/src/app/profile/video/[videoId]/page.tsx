@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import Container from "~/components/container";
 import { type Video } from "~/components/deck";
 import VideoForm from "~/components/forms/video-form";
 import Header from "~/components/header";
+import Container from "~/components/layouts/container";
 import { getServerAuthSession } from "~/server/auth";
 import { getVideoById } from "~/server/queries";
 
@@ -23,7 +23,7 @@ export default async function VideoPage(props: Readonly<Props>) {
 
   return (
     <>
-      <Header />
+      <Header user={session.user} />
       <Container as="main">
         <VideoForm video={video as Video} />
       </Container>

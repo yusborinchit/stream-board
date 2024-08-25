@@ -17,7 +17,7 @@ export default function UploadVideoButton() {
           return "New Video";
         },
       }}
-      className="w-full ut-button:grid ut-button:h-auto ut-button:w-full ut-button:place-items-center ut-button:rounded ut-button:bg-gradient-to-t ut-button:from-blue-700 ut-button:to-blue-500 ut-button:px-4 ut-button:py-2.5 ut-button:text-base ut-button:font-semibold ut-allowed-content:text-neutral-500 sm:w-fit sm:ut-button:w-fit"
+      className="w-full ut-button:grid ut-button:h-auto ut-button:w-full ut-button:place-items-center ut-button:rounded ut-button:bg-gradient-to-t ut-button:from-blue-800 ut-button:to-blue-500 ut-button:px-4 ut-button:py-2.5 ut-button:text-base ut-button:font-semibold ut-allowed-content:text-neutral-500 sm:w-fit sm:ut-button:w-fit"
     />
   );
 }
