@@ -54,7 +54,8 @@ export async function getVideos(userId: string) {
       isRandom: videos.isRandom,
     })
     .from(files)
-    .innerJoin(videos, eq(files.userId, userId));
+    .innerJoin(videos, eq(files.id, videos.fileId))
+    .where(eq(files.userId, userId));
 }
 
 export async function getAudios(userId: string) {
@@ -66,7 +67,8 @@ export async function getAudios(userId: string) {
       fileUrl: files.url,
     })
     .from(files)
-    .innerJoin(audios, eq(files.userId, userId));
+    .innerJoin(audios, eq(files.userId, audios.fileId))
+    .where(eq(files.userId, userId));
 }
 
 export async function getVideoById(videoId: string) {
@@ -83,7 +85,8 @@ export async function getVideoById(videoId: string) {
       isRandom: videos.isRandom,
     })
     .from(files)
-    .innerJoin(videos, eq(files.id, videoId));
+    .innerJoin(videos, eq(files.id, videos.fileId))
+    .where(eq(files.id, videoId));
 
   return video;
 }

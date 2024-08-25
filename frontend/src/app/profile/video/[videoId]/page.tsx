@@ -21,6 +21,8 @@ export default async function VideoPage(props: Readonly<Props>) {
 
   if (!video || video.userId !== session.user.id) redirect("/");
 
+  console.log(video);
+
   return (
     <>
       <Header user={session.user} />

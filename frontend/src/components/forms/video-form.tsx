@@ -23,6 +23,8 @@ export default function VideoForm(props: Readonly<Props>) {
     y: props.video.position.split(";")[1]!,
   });
 
+  console.log(inputs);
+
   function handleCheckboxChange(checkbox: string) {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
       setInputs({
