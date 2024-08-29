@@ -1,7 +1,7 @@
 "use server";
 
 import { eq, sql } from "drizzle-orm";
-import { type Video } from "~/components/deck";
+import { type Audio, type Video } from "~/components/deck";
 import { db } from "./db";
 import { audios, files, videos } from "./db/schema";
 
@@ -69,6 +69,32 @@ export async function getAudios(userId: string) {
     .from(files)
     .innerJoin(audios, eq(files.userId, audios.fileId))
     .where(eq(files.userId, userId));
+}
+
+export async function getAudioById(audioId: string) {
+  const [audio] = await db
+    .select({
+      type: sql`'audio'`.as("type"),
+      fileId: files.id,
+      userId: files.userId,
+      fileName: files.name,
+      fileUrl: files.url,
+    })
+    .from(files)
+    .innerJoin(audios, eq(files.id, audios.fileId))
+    .where(eq(files.id, audioId));
+
+  return audio;
+}
+
+export async function updateAudio(audio: Audio) {
+  await db
+    .update(files)
+    .set({
+      name: audio.fileName,
+      url: audio.fileUrl,
+    })
+    .where(eq(files.id, audio.fileId));
 }
 
 export async function getVideoById(videoId: string) {

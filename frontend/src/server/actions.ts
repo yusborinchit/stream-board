@@ -1,9 +1,14 @@
 "use server";
 
-import { type Video } from "~/components/deck";
-import { updateVideo } from "./queries";
+import { type Audio, type Video } from "~/components/deck";
+import { updateAudio, updateVideo } from "./queries";
 
 export async function updateVideoAction(formData: FormData) {
   const video = JSON.parse(formData.get("video") as string) as Video;
   await updateVideo(video);
+}
+
+export async function updateAudioAction(formData: FormData) {
+  const audio = JSON.parse(formData.get("audio") as string) as Audio;
+  await updateAudio(audio);
 }

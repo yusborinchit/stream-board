@@ -1,7 +1,8 @@
 "use client";
 
-import { Save } from "lucide-react";
+import { LoaderCircle, Save } from "lucide-react";
 import { useState } from "react";
+import useForm from "~/hooks/use-form";
 import { updateVideoAction } from "~/server/actions";
 import { type Video } from "../deck";
 import CheckboxInput from "./checkbox-input";
@@ -13,7 +14,8 @@ interface Props {
 }
 
 export default function VideoForm(props: Readonly<Props>) {
-  const [inputs, setInputs] = useState({
+  const [isLoading, setIsLoading] = useState(false);
+  const { inputs, handleCheckboxChange, handleInputChange } = useForm({
     name: props.video.fileName,
     fullscreen: props.video.isFullscreen,
     width: props.video.size.split(";")[0]!,
@@ -22,26 +24,6 @@ export default function VideoForm(props: Readonly<Props>) {
     x: props.video.position.split(";")[0]!,
     y: props.video.position.split(";")[1]!,
   });
-
-  console.log(inputs);
-
-  function handleCheckboxChange(checkbox: string) {
-    return (event: React.ChangeEvent<HTMLInputElement>) => {
-      setInputs({
-        ...inputs,
-        [checkbox]: event.target.checked,
-      });
-    };
-  }
-
-  function handleInputChange(input: string) {
-    return (event: React.ChangeEvent<HTMLInputElement>) => {
-      setInputs({
-        ...inputs,
-        [input]: event.target.value,
-      });
-    };
-  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -61,22 +43,26 @@ export default function VideoForm(props: Readonly<Props>) {
       }),
     );
 
+    setIsLoading(true);
     await updateVideoAction(formData);
+    setIsLoading(false);
+
     form.reset();
   }
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-4">
       <TextInput
         name="name"
         placeholder="Your new name here..."
-        value={inputs.name}
+        value={inputs.name as string}
         handleChange={handleInputChange("name")}
       >
         Video Name<span className="text-blue-500">:</span>
       </TextInput>
       <CheckboxInput
         name="fullscreen"
-        value={inputs.fullscreen}
+        value={inputs.fullscreen as boolean}
         handleChange={handleCheckboxChange("fullscreen")}
       >
         Fullscreen
@@ -85,9 +71,9 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="width"
           minValue={50}
-          value={inputs.width}
+          value={inputs.width as string}
           handleChange={handleInputChange("width")}
-          disabled={inputs.fullscreen}
+          disabled={inputs.fullscreen as boolean}
         >
           Width <span className="text-neutral-500">(On Pixels)</span>
           <span className="text-blue-500">:</span>
@@ -95,9 +81,9 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="height"
           minValue={50}
-          value={inputs.height}
+          value={inputs.height as string}
           handleChange={handleInputChange("height")}
-          disabled={inputs.fullscreen}
+          disabled={inputs.fullscreen as boolean}
         >
           Width <span className="text-neutral-500">(On Pixels)</span>
           <span className="text-blue-500">:</span>
@@ -105,7 +91,7 @@ export default function VideoForm(props: Readonly<Props>) {
       </div>
       <CheckboxInput
         name="random"
-        value={inputs.random}
+        value={inputs.random as boolean}
         handleChange={handleCheckboxChange("random")}
       >
         Random
@@ -114,9 +100,9 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="x"
           minValue={0}
-          value={inputs.x}
+          value={inputs.x as string}
           handleChange={handleInputChange("x")}
-          disabled={inputs.random}
+          disabled={inputs.random as boolean}
         >
           X Position <span className="text-neutral-500">(On Pixels)</span>
           <span className="text-blue-500">:</span>
@@ -124,17 +110,30 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="y"
           minValue={0}
-          value={inputs.y}
+          value={inputs.y as string}
           handleChange={handleInputChange("y")}
-          disabled={inputs.random}
+          disabled={inputs.random as boolean}
         >
           Y Position <span className="text-neutral-500">(On Pixels)</span>
           <span className="text-blue-500">:</span>
         </NumberInput>
       </div>
-      <button className="mt-8 flex items-center justify-center gap-2 rounded bg-gradient-to-t from-blue-700 to-blue-500 px-4 py-2.5 font-semibold">
-        <Save className="size-5" />
-        <span>Save Video</span>
+      <button
+        disabled={isLoading}
+        type="submit"
+        className="mt-8 flex items-center justify-center gap-2 rounded bg-gradient-to-t from-blue-700 to-blue-500 px-4 py-2.5 font-semibold disabled:opacity-50"
+      >
+        {isLoading ? (
+          <>
+            <LoaderCircle className="size-5 animate-spin" />
+            <span>Saving...</span>
+          </>
+        ) : (
+          <>
+            <Save className="size-5" />
+            <span>Save Video</span>
+          </>
+        )}
       </button>
     </form>
   );

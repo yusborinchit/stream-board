@@ -35,7 +35,7 @@ export default function Board(props: Readonly<Props>) {
   }
 
   return (
-    <main className="relative grid h-screen place-items-center overflow-hidden">
+    <main className="relative grid h-screen place-items-center overflow-hidden bg-white">
       {triggers.map((trigger) => (
         <TriggerDisplay
           key={trigger.id}

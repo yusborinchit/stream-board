@@ -12,7 +12,7 @@ interface Props {
   };
 }
 
-export default async function VideoPage(props: Readonly<Props>) {
+export default async function AudioPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
 
   if (!session) redirect("/sign-in");

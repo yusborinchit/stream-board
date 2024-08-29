@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import AudioCard from "~/components/cards/audio-card";
 import CardsList from "~/components/cards/cards-list";
 import VideoCard from "~/components/cards/video-card";
 import Header from "~/components/header";
@@ -35,7 +36,7 @@ export default async function ProfilePage() {
               </span>
             </a>
             <a
-              href={`/deck/${session.user.id}`}
+              href={`/profile/deck/${session.user.id}`}
               target="_blank"
               className="flex items-center gap-1"
             >
@@ -46,7 +47,7 @@ export default async function ProfilePage() {
             </a>
           </section>
           <section className="flex flex-col gap-4">
-            <header className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <header className="flex flex-col items-center justify-between gap-4 min-[450px]:flex-row">
               <h2 className="text-3xl font-bold tracking-tight">
                 Your Videos
                 <span className="text-blue-500">:</span>
@@ -66,13 +67,24 @@ export default async function ProfilePage() {
             )}
           </section>
           <section className="flex flex-col gap-4">
-            <header className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <header className="flex flex-col items-center justify-between gap-4 min-[450px]:flex-row">
               <h2 className="text-3xl font-bold tracking-tight">
                 Your Audios
                 <span className="text-blue-500">:</span>
               </h2>
               <UploadAudioButton />
             </header>
+            {audios.length > 0 && (
+              <CardsList>
+                {audios.map((audio) => (
+                  <AudioCard
+                    key={audio.fileId}
+                    id={audio.fileId}
+                    name={audio.fileName}
+                  />
+                ))}
+              </CardsList>
+            )}
           </section>
         </div>
       </Container>
