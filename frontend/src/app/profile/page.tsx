@@ -30,7 +30,7 @@ export default async function ProfilePage() {
               target="_blank"
               className="flex items-center gap-1"
             >
-              <span className="text-neutral-600">&rarr;</span>
+              <span className="text-neutral-700">&rarr;</span>
               <span className="underline decoration-blue-500 underline-offset-2">
                 Go to your Board
               </span>
@@ -40,7 +40,7 @@ export default async function ProfilePage() {
               target="_blank"
               className="flex items-center gap-1"
             >
-              <span className="text-neutral-600">&rarr;</span>
+              <span className="text-neutral-700">&rarr;</span>
               <span className="underline decoration-blue-500 underline-offset-2">
                 Go to your Deck
               </span>
@@ -49,10 +49,11 @@ export default async function ProfilePage() {
           <section className="flex flex-col gap-4">
             <header className="flex flex-col items-center justify-between gap-4 min-[450px]:flex-row">
               <h2 className="text-3xl font-bold tracking-tight">
-                Your Videos
+                Your Videos{" "}
+                <span className="text-neutral-700">({videos.length}/20)</span>
                 <span className="text-blue-500">:</span>
               </h2>
-              <UploadVideoButton />
+              <UploadVideoButton disabled={videos.length === 20} />
             </header>
             {videos.length > 0 && (
               <CardsList>
@@ -69,10 +70,11 @@ export default async function ProfilePage() {
           <section className="flex flex-col gap-4">
             <header className="flex flex-col items-center justify-between gap-4 min-[450px]:flex-row">
               <h2 className="text-3xl font-bold tracking-tight">
-                Your Audios
+                Your Audios{" "}
+                <span className="text-neutral-700">({audios.length}/20)</span>
                 <span className="text-blue-500">:</span>
               </h2>
-              <UploadAudioButton />
+              <UploadAudioButton disabled={audios.length === 20} />
             </header>
             {audios.length > 0 && (
               <CardsList>

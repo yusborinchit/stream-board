@@ -1,6 +1,6 @@
 "use server";
 
-import { eq, sql } from "drizzle-orm";
+import { count, eq, sql } from "drizzle-orm";
 import { type Audio, type Video } from "~/components/deck";
 import { db } from "./db";
 import { audios, files, videos } from "./db/schema";
@@ -137,4 +137,20 @@ export async function updateVideo(video: Video) {
     .where(eq(videos.fileId, video.fileId));
 
   await Promise.all([updateFileQuery, updateVideoQuery]);
+}
+
+export async function getVideosCount(userId: string) {
+  return await db
+    .selectDistinct({ count: count(videos.fileId) })
+    .from(files)
+    .innerJoin(videos, eq(files.id, videos.fileId))
+    .where(eq(files.userId, userId));
+}
+
+export async function getAudiosCount(userId: string) {
+  return await db
+    .selectDistinct({ count: count(audios.fileId) })
+    .from(files)
+    .innerJoin(audios, eq(files.id, audios.fileId))
+    .where(eq(files.userId, userId));
 }

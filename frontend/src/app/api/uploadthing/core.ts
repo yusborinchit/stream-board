@@ -1,7 +1,13 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { getServerAuthSession } from "~/server/auth";
-import { insertAudio, insertFile, insertVideo } from "~/server/queries";
+import {
+  getAudiosCount,
+  getVideosCount,
+  insertAudio,
+  insertFile,
+  insertVideo,
+} from "~/server/queries";
 
 const f = createUploadthing();
 
@@ -10,6 +16,11 @@ export const ourFileRouter = {
     .middleware(async () => {
       const session = await getServerAuthSession();
       if (!session) throw new UploadThingError("Unauthorized");
+
+      const [videosCount] = await getVideosCount(session.user.id);
+      if (!videosCount || videosCount.count >= 20)
+        throw new UploadThingError("Exceeded limit of videos");
+
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
@@ -27,6 +38,11 @@ export const ourFileRouter = {
     .middleware(async () => {
       const session = await getServerAuthSession();
       if (!session) throw new UploadThingError("Unauthorized");
+
+      const [audiosCount] = await getAudiosCount(session.user.id);
+      if (!audiosCount || audiosCount.count >= 20)
+        throw new UploadThingError("Exceeded limit of sounds");
+
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
