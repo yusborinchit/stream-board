@@ -31,7 +31,13 @@ interface Props {
 
 export default function Deck(props: Readonly<Props>) {
   const triggers = [...props.audios, ...props.videos];
+  const deckSize = Math.ceil(triggers.length / 2);
+
   const [socket] = useState(() => createWebSocket(props.userId));
+
+  const css = {
+    "--deck-size": `${deckSize}`,
+  } as React.CSSProperties;
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
@@ -49,22 +55,21 @@ export default function Deck(props: Readonly<Props>) {
   }
 
   return (
-    <main className="grid h-screen grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 p-4">
-      {triggers.length > 0 ? (
+    <main
+      style={css}
+      className="grid h-screen grid-cols-[repeat(var(--deck-size),1fr)] grid-rows-[repeat(var(--deck-size),1fr)] gap-4 p-4"
+    >
+      {triggers.length > 0 &&
         triggers.map((trigger) => (
           <button
             key={trigger.fileId}
             onClick={handleSendAlert(trigger)}
-            className="rounded bg-blue-500 p-4"
+            data-type={trigger.type}
+            className="rounded p-4 shadow data-[type=audio]:bg-purple-600 data-[type=video]:bg-blue-600"
           >
             {trigger.fileName}
           </button>
-        ))
-      ) : (
-        <p className="place-self-center text-4xl font-semibold tracking-tight text-neutral-500">
-          There is no triggers :(
-        </p>
-      )}
+        ))}
     </main>
   );
 }

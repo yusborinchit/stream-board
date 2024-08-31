@@ -1,31 +1,29 @@
 import { redirect } from "next/navigation";
-import { type Video } from "~/components/deck";
-import VideoForm from "~/components/forms/video-form";
+import { type Audio } from "~/components/deck";
+import AudioForm from "~/components/forms/audio-form";
 import Header from "~/components/header";
 import Container from "~/components/layouts/container";
 import { getServerAuthSession } from "~/server/auth";
-import { getVideoById } from "~/server/queries";
+import { getAudioById } from "~/server/queries";
 
 interface Props {
   params: {
-    videoId: string;
+    audioId: string;
   };
 }
 
 export default async function AudioPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
-
   if (!session) redirect("/sign-in");
 
-  const video = await getVideoById(props.params.videoId);
-
-  if (!video || video.userId !== session.user.id) redirect("/");
+  const audio = await getAudioById(props.params.audioId);
+  if (!audio || audio.userId !== session.user.id) redirect("/");
 
   return (
     <>
       <Header user={session.user} />
       <Container as="main">
-        <VideoForm video={video as Video} />
+        <AudioForm audio={audio as Audio} />
       </Container>
     </>
   );

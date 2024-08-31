@@ -58,7 +58,7 @@ export default function VideoForm(props: Readonly<Props>) {
         value={inputs.name as string}
         handleChange={handleInputChange("name")}
       >
-        Video Name<span className="text-blue-500">:</span>
+        Button Name<span className="text-blue-500">:</span>
       </TextInput>
       <CheckboxInput
         name="fullscreen"

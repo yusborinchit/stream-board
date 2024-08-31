@@ -161,3 +161,25 @@ export const audios = createTable(
 export const audiosRelations = relations(audios, ({ one }) => ({
   file: one(files, { fields: [audios.fileId], references: [files.id] }),
 }));
+
+export const decks = createTable(
+  "deck",
+  {
+    id: varchar("id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: varchar("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    size: varchar("size", { length: 5 }).notNull().default("10;10"),
+    layout: text("layout"),
+  },
+  (deck) => ({
+    deckIdIdx: index("deck_id_idx").on(deck.id),
+  }),
+);
+
+export const decksRelations = relations(decks, ({ one }) => ({
+  user: one(users, { fields: [decks.userId], references: [users.id] }),
+}));

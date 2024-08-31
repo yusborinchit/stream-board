@@ -4,17 +4,17 @@ import { LoaderCircle, Save } from "lucide-react";
 import { useState } from "react";
 import useForm from "~/hooks/use-form";
 import { updateAudioAction } from "~/server/actions";
-import { type Video } from "../deck";
+import { type Audio } from "../deck";
 import TextInput from "./text-input";
 
 interface Props {
-  video: Video;
+  audio: Audio;
 }
 
 export default function AudioForm(props: Readonly<Props>) {
   const [isLoading, setIsLoading] = useState(false);
   const { inputs, handleInputChange } = useForm({
-    name: props.video.fileName,
+    name: props.audio.fileName,
   });
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -26,7 +26,7 @@ export default function AudioForm(props: Readonly<Props>) {
     formData.append(
       "audio",
       JSON.stringify({
-        ...props.video,
+        ...props.audio,
         fileName: inputs.name,
       }),
     );
@@ -46,7 +46,7 @@ export default function AudioForm(props: Readonly<Props>) {
         value={inputs.name as string}
         handleChange={handleInputChange("name")}
       >
-        Video Name<span className="text-blue-500">:</span>
+        Button Name<span className="text-blue-500">:</span>
       </TextInput>
       <button
         disabled={isLoading}

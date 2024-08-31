@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { type TriggerWithId } from "../board";
-import { type Video } from "../deck";
+import { type Audio, type Video } from "../deck";
+import AudioDisplay from "./audio-display";
 import VideoDisplay from "./video-display";
 
 interface Props {
@@ -10,8 +11,10 @@ interface Props {
 
 const TriggerDisplay = memo(
   function TriggerDisplay(props: Readonly<Props>) {
-    return (
+    return props.trigger.type === "video" ? (
       <VideoDisplay onEnded={props.onEnded} video={props.trigger as Video} />
+    ) : (
+      <AudioDisplay onEnded={props.onEnded} audio={props.trigger as Audio} />
     );
   },
   (prev, next) => prev.trigger.id === next.trigger.id,

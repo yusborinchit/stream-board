@@ -67,7 +67,7 @@ export async function getAudios(userId: string) {
       fileUrl: files.url,
     })
     .from(files)
-    .innerJoin(audios, eq(files.userId, audios.fileId))
+    .innerJoin(audios, eq(files.id, audios.fileId))
     .where(eq(files.userId, userId));
 }
 
