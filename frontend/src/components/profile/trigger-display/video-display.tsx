@@ -1,5 +1,5 @@
 import { getRandomPosition } from "~/utils/get-random-position";
-import { type Video } from "../deck";
+import { type Video } from "../client-deck";
 
 interface Props {
   onEnded: () => void;

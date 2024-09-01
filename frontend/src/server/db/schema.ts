@@ -172,7 +172,7 @@ export const decks = createTable(
     userId: varchar("user_id", { length: 255 })
       .notNull()
       .references(() => users.id),
-    size: varchar("size", { length: 5 }).notNull().default("10;10"),
+    size: varchar("size", { length: 5 }).notNull().default("5;5"),
     layout: text("layout"),
   },
   (deck) => ({

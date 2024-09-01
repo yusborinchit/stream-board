@@ -1,6 +1,6 @@
 "use server";
 
-import { type Audio, type Video } from "~/components/deck";
+import { type Audio, type Video } from "~/components/profile/client-deck";
 import { updateAudio, updateVideo } from "./queries";
 
 export async function updateVideoAction(formData: FormData) {

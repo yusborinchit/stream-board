@@ -1,9 +1,9 @@
 "use server";
 
 import { count, eq, sql } from "drizzle-orm";
-import { type Audio, type Video } from "~/components/deck";
+import { type Audio, type Video } from "~/components/profile/client-deck";
 import { db } from "./db";
-import { audios, files, videos } from "./db/schema";
+import { audios, decks, files, videos } from "./db/schema";
 
 export async function insertFile(userId: string, name: string, url: string) {
   const [insertedFile] = await db
@@ -153,4 +153,19 @@ export async function getAudiosCount(userId: string) {
     .from(files)
     .innerJoin(audios, eq(files.id, audios.fileId))
     .where(eq(files.userId, userId));
+}
+
+export async function getDeck(userId: string) {
+  const [deck] = await db
+    .select({ id: decks.id, userId: decks.userId })
+    .from(decks)
+    .where(eq(decks.userId, userId));
+
+  return deck;
+}
+
+export async function getDeckById(deckId: string) {
+  const [deck] = await db.select().from(decks).where(eq(decks.id, deckId));
+
+  return deck;
 }

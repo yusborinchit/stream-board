@@ -1,6 +1,6 @@
 import { type User } from "next-auth";
-import SignOutButton from "./auth/sign-out-button";
-import Container from "./layouts/container";
+import SignOutButton from "../auth/sign-out-button";
+import Container from "../layouts/container";
 
 interface Props {
   user: User;

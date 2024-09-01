@@ -24,7 +24,7 @@ export default function UploadVideoButton(props: Readonly<Props>) {
         },
       }}
       className={twMerge(
-        "w-full ut-button:grid ut-button:h-auto ut-button:w-full ut-button:place-items-center ut-button:rounded ut-button:bg-gradient-to-t ut-button:from-blue-800 ut-button:to-blue-500 ut-button:px-4 ut-button:py-2.5 ut-button:text-base ut-button:font-semibold ut-button:disabled:bg-neutral-900 ut-allowed-content:text-neutral-500 min-[450px]:w-fit sm:ut-button:w-fit",
+        "w-full ut-button:grid ut-button:h-auto ut-button:w-full ut-button:place-items-center ut-button:rounded ut-button:bg-gradient-to-t ut-button:from-blue-800 ut-button:to-blue-500 ut-button:px-4 ut-button:py-2.5 ut-button:text-base ut-button:font-semibold hover:ut-button:shadow-lg hover:ut-button:shadow-blue-600/30 ut-button:disabled:bg-neutral-900 ut-allowed-content:text-neutral-500 min-[450px]:w-fit sm:ut-button:w-fit",
         props.disabled && "ut-button:opacity-50",
       )}
     />

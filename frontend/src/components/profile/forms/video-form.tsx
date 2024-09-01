@@ -4,7 +4,7 @@ import { LoaderCircle, Save } from "lucide-react";
 import { useState } from "react";
 import useForm from "~/hooks/use-form";
 import { updateVideoAction } from "~/server/actions";
-import { type Video } from "../deck";
+import { type Video } from "../client-deck";
 import CheckboxInput from "./checkbox-input";
 import NumberInput from "./number-input";
 import TextInput from "./text-input";

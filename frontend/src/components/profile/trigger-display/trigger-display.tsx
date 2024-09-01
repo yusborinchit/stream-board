@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { type TriggerWithId } from "../board";
-import { type Audio, type Video } from "../deck";
+import { type Audio, type Video } from "../client-deck";
 import AudioDisplay from "./audio-display";
 import VideoDisplay from "./video-display";
 

@@ -1,4 +1,4 @@
-import { type Audio } from "../deck";
+import { type Audio } from "../client-deck";
 
 interface Props {
   onEnded: () => void;

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { type Audio } from "~/components/deck";
-import AudioForm from "~/components/forms/audio-form";
-import Header from "~/components/header";
 import Container from "~/components/layouts/container";
+import { type Audio } from "~/components/profile/client-deck";
+import AudioForm from "~/components/profile/forms/audio-form";
+import Header from "~/components/profile/header";
 import { getServerAuthSession } from "~/server/auth";
 import { getAudioById } from "~/server/queries";
 

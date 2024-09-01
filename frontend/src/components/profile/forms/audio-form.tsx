@@ -4,7 +4,7 @@ import { LoaderCircle, Save } from "lucide-react";
 import { useState } from "react";
 import useForm from "~/hooks/use-form";
 import { updateAudioAction } from "~/server/actions";
-import { type Audio } from "../deck";
+import { type Audio } from "../client-deck";
 import TextInput from "./text-input";
 
 interface Props {

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { type Video } from "~/components/deck";
-import VideoForm from "~/components/forms/video-form";
-import Header from "~/components/header";
 import Container from "~/components/layouts/container";
+import { type Video } from "~/components/profile/client-deck";
+import VideoForm from "~/components/profile/forms/video-form";
+import Header from "~/components/profile/header";
 import { getServerAuthSession } from "~/server/auth";
 import { getVideoById } from "~/server/queries";
 

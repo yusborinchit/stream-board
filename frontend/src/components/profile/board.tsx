@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createWebSocket } from "~/utils/ws";
-import { type Trigger } from "./deck";
+import { type Trigger } from "./client-deck";
 import TriggerDisplay from "./trigger-display/trigger-display";
 
 export type TriggerWithId = Trigger & { id: string };
