@@ -32,19 +32,18 @@ interface Props {
 }
 
 export default function ClientDeck(props: Readonly<Props>) {
-  const triggers = [...props.audios, ...props.videos];
-  const [cols, rows] = props.deck.size.split(";");
-
   const [socket] = useState(() => createWebSocket(props.userId));
 
+  const triggers = [...props.audios, ...props.videos];
+  const size = Math.round(triggers.length / 2);
+
   const css = {
-    "--cols": `${cols}`,
-    "--rows": `${rows}`,
+    "--cols": `${size}`,
+    "--rows": `${size}`,
   } as React.CSSProperties;
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
-
     return () => {
       socket.close();
     };
@@ -60,7 +59,7 @@ export default function ClientDeck(props: Readonly<Props>) {
   return (
     <main
       style={css}
-      className="grid h-screen grid-cols-[repeat(var(--cols),1fr)] grid-rows-[repeat(var(--rows),1fr)] gap-4 p-4"
+      className="grid h-screen grid-cols-[max(repeat(var(--cols),1),1fr)] grid-rows-[repeat(max(var(--rows),2),1fr)] gap-4 p-4"
     >
       {triggers.length > 0 &&
         triggers.map((trigger) => (
