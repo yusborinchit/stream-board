@@ -156,10 +156,7 @@ export async function getAudiosCount(userId: string) {
 }
 
 export async function getDeck(userId: string) {
-  const [deck] = await db
-    .select({ id: decks.id, userId: decks.userId })
-    .from(decks)
-    .where(eq(decks.userId, userId));
+  const [deck] = await db.select().from(decks).where(eq(decks.userId, userId));
 
   return deck;
 }

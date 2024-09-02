@@ -11,7 +11,7 @@ interface Props {
   userId: string;
 }
 
-export default function Board(props: Readonly<Props>) {
+export default function ClientBoard(props: Readonly<Props>) {
   const [triggers, setTriggers] = useState<TriggerWithId[]>([]);
   const [socket] = useState(() => createWebSocket(props.userId));
 

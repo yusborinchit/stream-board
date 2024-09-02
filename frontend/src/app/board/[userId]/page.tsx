@@ -1,4 +1,4 @@
-import Board from "~/components/profile/board";
+import ClientBoard from "~/components/profile/client-board";
 
 interface Props {
   params: {
@@ -7,5 +7,5 @@ interface Props {
 }
 
 export default async function BoardPage(props: Readonly<Props>) {
-  return <Board userId={props.params.userId} />;
+  return <ClientBoard userId={props.params.userId} />;
 }
