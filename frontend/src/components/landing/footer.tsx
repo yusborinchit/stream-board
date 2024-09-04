@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <Container
       as="footer"
-      className="mt-32 flex items-center justify-between py-8 text-neutral-800"
+      className="mt-32 flex items-center justify-between py-8 text-neutral-500"
     >
       <p>Copyright © 2024 Stream Board. All rights reserved.</p>
       <p>

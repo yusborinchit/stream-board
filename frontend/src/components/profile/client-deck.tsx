@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type Deck } from "~/app/profile/deck/[deckId]/page";
 import { createWebSocket } from "~/utils/ws";
 
 export interface Video {
@@ -25,7 +24,6 @@ export interface Audio {
 export type Trigger = Video | Audio;
 
 interface Props {
-  deck: Deck;
   userId: string;
   videos: Video[];
   audios: Audio[];

@@ -4,7 +4,7 @@ import ClientDeck, {
   type Video,
 } from "~/components/profile/client-deck";
 import { getServerAuthSession } from "~/server/auth";
-import { getAudios, getDeckById, getVideos } from "~/server/queries";
+import { getAudios, getVideos } from "~/server/queries";
 
 export interface Deck {
   id: string;
@@ -21,10 +21,7 @@ interface Props {
 
 export default async function DeckPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
-  if (!session) redirect("/sign-in");
-
-  const deck = await getDeckById(props.params.deckId);
-  if (!deck || session.user.id !== deck.userId) redirect("/sign-in");
+  if (!session || session.user.id !== props.params.deckId) redirect("/sign-in");
 
   const [videos, audios] = await Promise.all([
     await getVideos(session.user.id),
@@ -33,8 +30,7 @@ export default async function DeckPage(props: Readonly<Props>) {
 
   return (
     <ClientDeck
-      deck={deck}
-      userId={deck.userId}
+      userId={props.params.deckId}
       videos={videos as Video[]}
       audios={audios as Audio[]}
     />
