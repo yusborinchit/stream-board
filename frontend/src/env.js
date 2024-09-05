@@ -20,7 +20,7 @@ export const env = createEnv({
     UPLOADTHING_SECRET: z.string(),
   },
   client: {
-    NEXT_PUBLIC_WS_URL: z.string().url(),
+    NEXT_PUBLIC_WS_URL: z.string(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
