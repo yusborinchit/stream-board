@@ -29,7 +29,7 @@ export default async function ProfilePage() {
           <a
             href={`/profile/deck/${session.user.id}`}
             target="_blank"
-            className="w-full rounded bg-gradient-to-t from-blue-800 to-blue-500 px-4 py-2.5 text-center font-semibold text-neutral-50"
+            className="w-full rounded bg-gradient-to-t from-blue-800 to-blue-500 px-4 py-2.5 text-center font-semibold text-neutral-50 hover:shadow-xl hover:shadow-blue-600/30"
           >
             Go to your Deck
           </a>

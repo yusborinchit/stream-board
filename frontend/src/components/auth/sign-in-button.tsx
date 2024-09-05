@@ -17,7 +17,7 @@ export default function SignInButton() {
     <button
       onClick={handleSignIn}
       disabled={isLoading}
-      className="mt-4 flex w-full items-center gap-2 rounded bg-gradient-to-t from-purple-800 to-purple-500 px-4 py-2.5 font-semibold text-neutral-50 disabled:opacity-50"
+      className="mt-4 flex w-full items-center gap-2 rounded bg-gradient-to-t from-purple-800 to-purple-500 px-4 py-2.5 font-semibold text-neutral-50 hover:shadow-lg hover:shadow-purple-600/30 disabled:opacity-50"
     >
       {isLoading ? (
         <>

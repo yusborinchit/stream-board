@@ -19,7 +19,9 @@ export const env = createEnv({
     TWITCH_CLIENT_SECRET: z.string(),
     UPLOADTHING_SECRET: z.string(),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_WS_URL: z.string().url(),
+  },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
@@ -28,6 +30,7 @@ export const env = createEnv({
     TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
     TWITCH_CLIENT_SECRET: process.env.TWITCH_CLIENT_SECRET,
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
+    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,
