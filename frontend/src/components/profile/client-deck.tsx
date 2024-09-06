@@ -57,7 +57,7 @@ export default function ClientDeck(props: Readonly<Props>) {
   return (
     <main
       style={css}
-      className="grid h-screen grid-cols-[max(repeat(var(--cols),1),1fr)] grid-rows-[repeat(max(var(--rows),2),1fr)] gap-4 p-4"
+      className="grid h-screen grid-cols-[max(repeat(var(--cols),1),1fr)] grid-rows-[repeat(max(var(--rows),2),1fr)] gap-4 bg-neutral-950 p-4"
     >
       {triggers.length > 0 &&
         triggers.map((trigger) => (

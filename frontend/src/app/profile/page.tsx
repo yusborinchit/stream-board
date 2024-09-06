@@ -19,7 +19,7 @@ export default async function ProfilePage() {
   ]);
 
   return (
-    <>
+    <div className="bg-neutral-950">
       <Header user={session.user} />
       <Container as="main" className="flex flex-col gap-12 py-4">
         <section className="flex flex-col gap-4">
@@ -39,6 +39,6 @@ export default async function ProfilePage() {
         <AudiosSection userId={session.user.id} audios={audios as Audio[]} />
       </Container>
       <Footer />
-    </>
+    </div>
   );
 }
