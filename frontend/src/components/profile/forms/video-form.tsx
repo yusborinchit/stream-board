@@ -1,6 +1,6 @@
 "use client";
 
-import { LoaderCircle, Save } from "lucide-react";
+import { LoaderCircle, Save, Trash } from "lucide-react";
 import { useState } from "react";
 import useForm from "~/hooks/use-form";
 import { updateVideoAction } from "~/server/actions";
@@ -132,6 +132,22 @@ export default function VideoForm(props: Readonly<Props>) {
           <>
             <Save className="size-5" />
             <span>Save Video</span>
+          </>
+        )}
+      </button>
+      <button
+        type="button"
+        className="flex items-center justify-center gap-2 rounded bg-gradient-to-t from-red-700 to-red-500 px-4 py-2.5 font-semibold disabled:opacity-50"
+      >
+        {isLoading ? (
+          <>
+            <LoaderCircle className="size-5 animate-spin" />
+            <span>Saving...</span>
+          </>
+        ) : (
+          <>
+            <Trash className="size-5" />
+            <span>Delete Video</span>
           </>
         )}
       </button>
