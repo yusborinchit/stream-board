@@ -2,7 +2,7 @@ import Container from "~/components/layouts/container";
 
 export default function HeroSection() {
   return (
-    <Container as="div" className="flex flex-col items-center gap-4 py-4">
+    <Container as="div" className="z-10 flex flex-col items-center gap-4 py-4">
       <h1 className="mt-48 text-center text-5xl font-bold tracking-tight">
         Enhance your Stream with Stream Board
       </h1>

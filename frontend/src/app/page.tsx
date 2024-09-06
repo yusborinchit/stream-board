@@ -8,14 +8,16 @@ import Background from "~/components/layouts/background";
 export default function HomePage() {
   return (
     <>
-      <HeroSection />
-      <main className="bg-neutral-950 py-4">
-        <AboutUsSection />
-        <PricingSection />
-        <StepsSection />
-      </main>
-      <Footer />
-      <Background />
+      <div className="">
+        <HeroSection />
+        <main className="bg-neutral-950 py-4">
+          <AboutUsSection />
+          <PricingSection />
+          <StepsSection />
+        </main>
+        <Footer />
+        <Background />
+      </div>
     </>
   );
 }
