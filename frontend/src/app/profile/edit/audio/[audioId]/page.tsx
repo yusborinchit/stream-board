@@ -20,7 +20,7 @@ export default async function AudioPage(props: Readonly<Props>) {
   if (!audio || audio.userId !== session.user.id) redirect("/");
 
   return (
-    <div className="bg-neutral-950">
+    <div className="h-[100dvh] bg-neutral-950">
       <Header user={session.user} />
       <Container as="main">
         <AudioForm audio={audio as Audio} />
