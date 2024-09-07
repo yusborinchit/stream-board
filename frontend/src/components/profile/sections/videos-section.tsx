@@ -31,7 +31,7 @@ export default async function VideosSection(props: Readonly<Props>) {
           ))}
         </CardsList>
       ) : (
-        <div className="flex items-center gap-4 text-neutral-900">
+        <div className="flex items-center gap-4 text-neutral-700">
           <Wind className="size-24" />
           <p className="text-3xl font-bold leading-tight tracking-tighter">
             Ups!
