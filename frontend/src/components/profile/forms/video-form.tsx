@@ -3,7 +3,7 @@
 import { LoaderCircle, Save, Trash } from "lucide-react";
 import { useState } from "react";
 import useForm from "~/hooks/use-form";
-import { updateVideoAction } from "~/server/actions";
+import { deleteVideoAction, updateVideoAction } from "~/server/actions";
 import { type Video } from "../client-deck";
 import CheckboxInput from "./checkbox-input";
 import NumberInput from "./number-input";
@@ -15,6 +15,8 @@ interface Props {
 
 export default function VideoForm(props: Readonly<Props>) {
   const [isLoading, setIsLoading] = useState(false);
+  const [actionType, setActionType] = useState<"save" | "delete">("save");
+
   const { inputs, handleCheckboxChange, handleInputChange } = useForm({
     name: props.video.fileName,
     fullscreen: props.video.isFullscreen,
@@ -44,7 +46,8 @@ export default function VideoForm(props: Readonly<Props>) {
     );
 
     setIsLoading(true);
-    await updateVideoAction(formData);
+    if (actionType === "save") await updateVideoAction(formData);
+    if (actionType === "delete") await deleteVideoAction(formData);
     setIsLoading(false);
 
     form.reset();
@@ -118,39 +121,36 @@ export default function VideoForm(props: Readonly<Props>) {
           <span className="text-blue-500">:</span>
         </NumberInput>
       </div>
-      <button
-        disabled={isLoading}
-        type="submit"
-        className="mt-8 flex items-center justify-center gap-2 rounded bg-gradient-to-t from-blue-700 to-blue-500 px-4 py-2.5 font-semibold disabled:opacity-50"
-      >
-        {isLoading ? (
-          <>
+      <div className="mt-8 grid grid-cols-2 gap-4">
+        <button
+          disabled={isLoading}
+          type="submit"
+          onClick={() => setActionType("save")}
+          value="save"
+          className="flex items-center justify-center gap-2 rounded bg-gradient-to-t from-blue-700 to-blue-500 px-4 py-2.5 font-semibold disabled:opacity-50"
+        >
+          {isLoading ? (
             <LoaderCircle className="size-5 animate-spin" />
-            <span>Saving...</span>
-          </>
-        ) : (
-          <>
+          ) : (
             <Save className="size-5" />
-            <span>Save Video</span>
-          </>
-        )}
-      </button>
-      <button
-        type="button"
-        className="flex items-center justify-center gap-2 rounded bg-gradient-to-t from-red-700 to-red-500 px-4 py-2.5 font-semibold disabled:opacity-50"
-      >
-        {isLoading ? (
-          <>
+          )}
+          {isLoading ? <span>Loading...</span> : <span>Save Video</span>}
+        </button>
+        <button
+          disabled={isLoading}
+          type="submit"
+          onClick={() => setActionType("delete")}
+          value="delete"
+          className="flex items-center justify-center gap-2 rounded bg-gradient-to-t from-red-900 to-red-600 px-4 py-2.5 font-semibold disabled:opacity-50"
+        >
+          {isLoading ? (
             <LoaderCircle className="size-5 animate-spin" />
-            <span>Saving...</span>
-          </>
-        ) : (
-          <>
+          ) : (
             <Trash className="size-5" />
-            <span>Delete Video</span>
-          </>
-        )}
-      </button>
+          )}
+          {isLoading ? <span>Loading...</span> : <span>Delete Video</span>}
+        </button>
+      </div>
     </form>
   );
 }

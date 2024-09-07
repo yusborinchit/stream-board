@@ -166,3 +166,7 @@ export async function getDeckById(deckId: string) {
 
   return deck;
 }
+
+export async function deleteFile(fileId: string) {
+  return await db.delete(files).where(eq(files.id, fileId));
+}

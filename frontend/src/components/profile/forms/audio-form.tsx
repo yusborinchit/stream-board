@@ -1,9 +1,9 @@
 "use client";
 
-import { LoaderCircle, Save } from "lucide-react";
+import { LoaderCircle, Save, Trash } from "lucide-react";
 import { useState } from "react";
 import useForm from "~/hooks/use-form";
-import { updateAudioAction } from "~/server/actions";
+import { deleteAudioAction, updateAudioAction } from "~/server/actions";
 import { type Audio } from "../client-deck";
 import TextInput from "./text-input";
 
@@ -13,6 +13,8 @@ interface Props {
 
 export default function AudioForm(props: Readonly<Props>) {
   const [isLoading, setIsLoading] = useState(false);
+  const [actionType, setActionType] = useState<"save" | "delete">("save");
+
   const { inputs, handleInputChange } = useForm({
     name: props.audio.fileName,
   });
@@ -32,7 +34,8 @@ export default function AudioForm(props: Readonly<Props>) {
     );
 
     setIsLoading(true);
-    await updateAudioAction(formData);
+    if (actionType === "save") await updateAudioAction(formData);
+    if (actionType === "delete") await deleteAudioAction(formData);
     setIsLoading(false);
 
     form.reset();
@@ -48,23 +51,36 @@ export default function AudioForm(props: Readonly<Props>) {
       >
         Button Name<span className="text-blue-500">:</span>
       </TextInput>
-      <button
-        disabled={isLoading}
-        type="submit"
-        className="mt-8 flex items-center justify-center gap-2 rounded bg-gradient-to-t from-blue-700 to-blue-500 px-4 py-2.5 font-semibold disabled:opacity-50"
-      >
-        {isLoading ? (
-          <>
+      <div className="mt-8 grid grid-cols-2 gap-4">
+        <button
+          disabled={isLoading}
+          type="submit"
+          onClick={() => setActionType("save")}
+          value="save"
+          className="flex items-center justify-center gap-2 rounded bg-gradient-to-t from-blue-700 to-blue-500 px-4 py-2.5 font-semibold disabled:opacity-50"
+        >
+          {isLoading ? (
             <LoaderCircle className="size-5 animate-spin" />
-            <span>Saving...</span>
-          </>
-        ) : (
-          <>
+          ) : (
             <Save className="size-5" />
-            <span>Save Video</span>
-          </>
-        )}
-      </button>
+          )}
+          {isLoading ? <span>Loading...</span> : <span>Save Sound</span>}
+        </button>
+        <button
+          disabled={isLoading}
+          type="submit"
+          onClick={() => setActionType("delete")}
+          value="delete"
+          className="flex items-center justify-center gap-2 rounded bg-gradient-to-t from-red-900 to-red-600 px-4 py-2.5 font-semibold disabled:opacity-50"
+        >
+          {isLoading ? (
+            <LoaderCircle className="size-5 animate-spin" />
+          ) : (
+            <Trash className="size-5" />
+          )}
+          {isLoading ? <span>Loading...</span> : <span>Delete Sound</span>}
+        </button>
+      </div>
     </form>
   );
 }

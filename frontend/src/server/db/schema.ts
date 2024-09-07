@@ -130,7 +130,7 @@ export const videos = createTable(
     fileId: varchar("file_id", { length: 255 })
       .notNull()
       .primaryKey()
-      .references(() => files.id),
+      .references(() => files.id, { onDelete: "cascade" }),
     position: varchar("position", { length: 255 }).default("0;0"),
     size: varchar("size", { length: 255 }).default("250;250"),
     isFullscreen: boolean("is_fullscreen").notNull().default(false),
@@ -151,7 +151,7 @@ export const audios = createTable(
     fileId: varchar("file_id", { length: 255 })
       .notNull()
       .primaryKey()
-      .references(() => files.id),
+      .references(() => files.id, { onDelete: "cascade" }),
   },
   (audio) => ({
     fileIdIdx: index("audio_file_id_idx").on(audio.fileId),
