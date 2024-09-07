@@ -30,6 +30,7 @@ export default function SignOutButton(props: Readonly<Props>) {
         alt={`${props.user.name} avatar`}
         width={48}
         height={48}
+        priority={true}
         className="h-full w-full rounded-full object-cover"
       />
     </button>
