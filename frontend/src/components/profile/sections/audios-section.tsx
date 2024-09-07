@@ -35,7 +35,7 @@ export default async function AudiosSection(props: Readonly<Props>) {
           <Wind className="size-24" />
           <p className="text-3xl font-bold leading-tight tracking-tighter">
             Ups!
-            <br /> You don&apos;t have any audios yet.
+            <br /> You don&apos;t have any sounds yet.
           </p>
         </div>
       )}
