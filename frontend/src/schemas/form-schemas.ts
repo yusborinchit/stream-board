@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const VideoFormSchema = z.object({
   name: z.string().min(1),
+  color: z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/),
   fullscreen: z.boolean(),
   width: z.number().min(50),
   height: z.number().min(50),
@@ -12,4 +13,5 @@ export const VideoFormSchema = z.object({
 
 export const AudioFormSchema = z.object({
   name: z.string().min(1),
+  color: z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/),
 });

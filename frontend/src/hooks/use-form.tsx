@@ -26,5 +26,14 @@ export default function useForm(defaultInputs: Record<string, InputType>) {
     };
   }
 
-  return { inputs, handleCheckboxChange, handleInputChange };
+  function handleColorChange(input: string) {
+    return (color: string) => {
+      setInputs({
+        ...inputs,
+        [input]: color,
+      });
+    };
+  }
+
+  return { inputs, handleCheckboxChange, handleInputChange, handleColorChange };
 }

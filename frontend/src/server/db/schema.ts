@@ -114,6 +114,7 @@ export const files = createTable(
       .references(() => users.id),
     name: varchar("name", { length: 255 }).notNull(),
     url: varchar("url", { length: 255 }).notNull(),
+    color: varchar("color", { length: 24 }).notNull().default("#2563eb"),
   },
   (file) => ({
     userIdIdx: index("file_user_id_idx").on(file.userId),

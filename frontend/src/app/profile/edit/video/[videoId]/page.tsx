@@ -20,11 +20,14 @@ export default async function VideoPage(props: Readonly<Props>) {
   if (!video || video.userId !== session.user.id) redirect("/");
 
   return (
-    <div className="h-[100dvh] bg-neutral-950">
+    <>
       <Header user={session.user} />
-      <Container as="main">
+      <Container as="main" className="flex flex-col gap-4">
+        <a href="/profile/" className="text-neutral-500">
+          &larr; Back to Profile
+        </a>
         <VideoForm video={video as Video} />
       </Container>
-    </div>
+    </>
   );
 }

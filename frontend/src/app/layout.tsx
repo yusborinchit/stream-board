@@ -23,7 +23,7 @@ interface Props {
 export default function RootLayout(props: Readonly<Props>) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${MonoFont.variable}`}>
-      <body className="overflow-x-hidden font-sans text-neutral-50">
+      <body className="overflow-x-hidden bg-neutral-950 font-sans text-neutral-50">
         {props.children}
         <Toaster />
       </body>

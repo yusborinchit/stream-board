@@ -36,6 +36,7 @@ export default function ClientBoard(props: Readonly<Props>) {
 
   return (
     <main className="relative grid h-screen place-items-center overflow-hidden bg-transparent">
+      <style>{`body { background-color: transparent !important; }`}</style>
       {triggers.map((trigger) => (
         <TriggerDisplay
           key={trigger.id}

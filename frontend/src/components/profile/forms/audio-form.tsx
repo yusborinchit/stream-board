@@ -8,6 +8,7 @@ import { AudioFormSchema } from "~/schemas/form-schemas";
 import { deleteAudioAction, updateAudioAction } from "~/server/actions";
 import { type Audio } from "../client-deck";
 import ErrorToast from "../toasts/error-toast";
+import ColorInput from "./color-input";
 import TextInput from "./text-input";
 
 interface Props {
@@ -18,8 +19,9 @@ export default function AudioForm(props: Readonly<Props>) {
   const [isLoading, setIsLoading] = useState(false);
   const [actionType, setActionType] = useState<"save" | "delete">("save");
 
-  const { inputs, handleInputChange } = useForm({
+  const { inputs, handleInputChange, handleColorChange } = useForm({
     name: props.audio.fileName,
+    color: props.audio.color,
   });
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -46,6 +48,7 @@ export default function AudioForm(props: Readonly<Props>) {
     const audio = {
       ...props.audio,
       fileName: result.data.name,
+      color: result.data.color,
     };
 
     formData.append("audio", JSON.stringify(audio));
@@ -67,6 +70,22 @@ export default function AudioForm(props: Readonly<Props>) {
       >
         Button Name<span className="text-blue-500">:</span>
       </TextInput>
+      <ColorInput
+        color={String(inputs.color)}
+        handleChange={handleColorChange("color")}
+      >
+        Button Color<span className="text-blue-500">:</span>
+      </ColorInput>
+      <div className="flex flex-col gap-1">
+        <p className="text-sm font-semibold">
+          Audio Preview<span className="text-blue-500">:</span>
+        </p>
+        <audio
+          src={props.audio.fileUrl}
+          controls
+          className="max-h-[300px] w-full rounded"
+        />
+      </div>
       <div className="mt-8 grid grid-cols-2 gap-4">
         <button
           disabled={isLoading}

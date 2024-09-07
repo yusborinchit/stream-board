@@ -52,6 +52,7 @@ export async function getVideos(userId: string) {
       size: videos.size,
       isFullscreen: videos.isFullscreen,
       isRandom: videos.isRandom,
+      color: files.color,
     })
     .from(files)
     .innerJoin(videos, eq(files.id, videos.fileId))
@@ -65,6 +66,7 @@ export async function getAudios(userId: string) {
       fileId: files.id,
       fileName: files.name,
       fileUrl: files.url,
+      color: files.color,
     })
     .from(files)
     .innerJoin(audios, eq(files.id, audios.fileId))
@@ -79,6 +81,7 @@ export async function getAudioById(audioId: string) {
       userId: files.userId,
       fileName: files.name,
       fileUrl: files.url,
+      color: files.color,
     })
     .from(files)
     .innerJoin(audios, eq(files.id, audios.fileId))
@@ -93,6 +96,7 @@ export async function updateAudio(audio: Audio) {
     .set({
       name: audio.fileName,
       url: audio.fileUrl,
+      color: audio.color,
     })
     .where(eq(files.id, audio.fileId));
 }
@@ -109,6 +113,7 @@ export async function getVideoById(videoId: string) {
       size: videos.size,
       isFullscreen: videos.isFullscreen,
       isRandom: videos.isRandom,
+      color: files.color,
     })
     .from(files)
     .innerJoin(videos, eq(files.id, videos.fileId))
@@ -123,6 +128,7 @@ export async function updateVideo(video: Video) {
     .set({
       name: video.fileName,
       url: video.fileUrl,
+      color: video.color,
     })
     .where(eq(files.id, video.fileId));
 

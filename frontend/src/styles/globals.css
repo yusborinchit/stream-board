@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.react-colorful {
+  @apply !max-h-[150px] !w-full;
+}
+
+.react-colorful__saturation {
+  @apply !rounded-t;
+}
+
+.react-colorful__last-control {
+  @apply !rounded-b;
+}

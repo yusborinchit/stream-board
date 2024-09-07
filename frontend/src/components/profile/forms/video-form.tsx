@@ -9,6 +9,7 @@ import { deleteVideoAction, updateVideoAction } from "~/server/actions";
 import { type Video } from "../client-deck";
 import ErrorToast from "../toasts/error-toast";
 import CheckboxInput from "./checkbox-input";
+import ColorInput from "./color-input";
 import NumberInput from "./number-input";
 import TextInput from "./text-input";
 
@@ -20,15 +21,19 @@ export default function VideoForm(props: Readonly<Props>) {
   const [isLoading, setIsLoading] = useState(false);
   const [actionType, setActionType] = useState<"save" | "delete">("save");
 
-  const { inputs, handleCheckboxChange, handleInputChange } = useForm({
-    name: props.video.fileName,
-    fullscreen: props.video.isFullscreen,
-    width: Number(props.video.size.split(";")[0]),
-    height: Number(props.video.size.split(";")[1]),
-    random: props.video.isRandom,
-    x: Number(props.video.position.split(";")[0]),
-    y: Number(props.video.position.split(";")[1]),
-  });
+  const { inputs, handleCheckboxChange, handleInputChange, handleColorChange } =
+    useForm({
+      name: props.video.fileName,
+      color: props.video.color,
+      fullscreen: props.video.isFullscreen,
+      width: Number(props.video.size.split(";")[0]),
+      height: Number(props.video.size.split(";")[1]),
+      random: props.video.isRandom,
+      x: Number(props.video.position.split(";")[0]),
+      y: Number(props.video.position.split(";")[1]),
+    });
+
+  console.log(inputs.color);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -54,6 +59,7 @@ export default function VideoForm(props: Readonly<Props>) {
     const video = {
       ...props.video,
       fileName: result.data.name,
+      color: result.data.color,
       isFullscreen: result.data.fullscreen,
       size: `${result.data.width};${result.data.height}`,
       isRandom: result.data.random,
@@ -79,6 +85,20 @@ export default function VideoForm(props: Readonly<Props>) {
       >
         Button Name<span className="text-blue-500">:</span>
       </TextInput>
+      <ColorInput
+        color={String(inputs.color)}
+        handleChange={handleColorChange("color")}
+      >
+        Button Color<span className="text-blue-500">:</span>
+      </ColorInput>
+      <div className="flex flex-col gap-1">
+        <p className="text-sm font-semibold">
+          Video Preview<span className="text-blue-500">:</span>
+        </p>
+        <video controls className="max-h-[300px] w-full rounded">
+          <source src={props.video.fileUrl} type="video/mp4" />
+        </video>
+      </div>
       <CheckboxInput
         name="fullscreen"
         value={Boolean(inputs.fullscreen)}
