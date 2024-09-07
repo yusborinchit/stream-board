@@ -2,9 +2,12 @@
 
 import { LoaderCircle, Save, Trash } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import useForm from "~/hooks/use-form";
+import { AudioFormSchema } from "~/schemas/form-schemas";
 import { deleteAudioAction, updateAudioAction } from "~/server/actions";
 import { type Audio } from "../client-deck";
+import ErrorToast from "../toasts/error-toast";
 import TextInput from "./text-input";
 
 interface Props {
@@ -25,17 +28,30 @@ export default function AudioForm(props: Readonly<Props>) {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    formData.append(
-      "audio",
-      JSON.stringify({
-        ...props.audio,
-        fileName: inputs.name,
-      }),
-    );
+    if (actionType === "delete") {
+      formData.append("audio", JSON.stringify(props.audio));
+
+      setIsLoading(true);
+      await deleteAudioAction(formData);
+      setIsLoading(false);
+
+      return form.reset();
+    }
+
+    const result = AudioFormSchema.safeParse(inputs);
+
+    if (!result.success)
+      return toast.custom(() => <ErrorToast message="Invalid Form Data" />);
+
+    const audio = {
+      ...props.audio,
+      fileName: result.data.name,
+    };
+
+    formData.append("audio", JSON.stringify(audio));
 
     setIsLoading(true);
     if (actionType === "save") await updateAudioAction(formData);
-    if (actionType === "delete") await deleteAudioAction(formData);
     setIsLoading(false);
 
     form.reset();
@@ -46,8 +62,8 @@ export default function AudioForm(props: Readonly<Props>) {
       <TextInput
         name="name"
         placeholder="Your new name here..."
-        value={inputs.name as string}
-        handleChange={handleInputChange("name")}
+        value={String(inputs.name)}
+        handleChange={handleInputChange("name", "text")}
       >
         Button Name<span className="text-blue-500">:</span>
       </TextInput>

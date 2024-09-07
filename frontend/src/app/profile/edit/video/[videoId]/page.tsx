@@ -14,7 +14,7 @@ interface Props {
 
 export default async function VideoPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
-  if (!session) redirect("/sign-in");
+  if (!session) redirect("/sign-in/");
 
   const video = await getVideoById(props.params.videoId);
   if (!video || video.userId !== session.user.id) redirect("/");

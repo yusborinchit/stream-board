@@ -21,7 +21,8 @@ interface Props {
 
 export default async function DeckPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
-  if (!session || session.user.id !== props.params.deckId) redirect("/sign-in");
+  if (!session || session.user.id !== props.params.deckId)
+    redirect("/sign-in/");
 
   const [videos, audios] = await Promise.all([
     await getVideos(session.user.id),

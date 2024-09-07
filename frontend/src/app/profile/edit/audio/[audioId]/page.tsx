@@ -14,7 +14,7 @@ interface Props {
 
 export default async function AudioPage(props: Readonly<Props>) {
   const session = await getServerAuthSession();
-  if (!session) redirect("/sign-in");
+  if (!session) redirect("/sign-in/");
 
   const audio = await getAudioById(props.params.audioId);
   if (!audio || audio.userId !== session.user.id) redirect("/");

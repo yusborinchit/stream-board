@@ -2,9 +2,12 @@
 
 import { LoaderCircle, Save, Trash } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import useForm from "~/hooks/use-form";
+import { VideoFormSchema } from "~/schemas/form-schemas";
 import { deleteVideoAction, updateVideoAction } from "~/server/actions";
 import { type Video } from "../client-deck";
+import ErrorToast from "../toasts/error-toast";
 import CheckboxInput from "./checkbox-input";
 import NumberInput from "./number-input";
 import TextInput from "./text-input";
@@ -20,11 +23,11 @@ export default function VideoForm(props: Readonly<Props>) {
   const { inputs, handleCheckboxChange, handleInputChange } = useForm({
     name: props.video.fileName,
     fullscreen: props.video.isFullscreen,
-    width: props.video.size.split(";")[0]!,
-    height: props.video.size.split(";")[1]!,
+    width: Number(props.video.size.split(";")[0]),
+    height: Number(props.video.size.split(";")[1]),
     random: props.video.isRandom,
-    x: props.video.position.split(";")[0]!,
-    y: props.video.position.split(";")[1]!,
+    x: Number(props.video.position.split(";")[0]),
+    y: Number(props.video.position.split(";")[1]),
   });
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -33,21 +36,34 @@ export default function VideoForm(props: Readonly<Props>) {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    formData.append(
-      "video",
-      JSON.stringify({
-        ...props.video,
-        fileName: inputs.name,
-        isFullscreen: inputs.fullscreen,
-        size: `${inputs.width};${inputs.height}`,
-        isRandom: inputs.random,
-        position: `${inputs.x};${inputs.y}`,
-      }),
-    );
+    if (actionType === "delete") {
+      formData.append("video", JSON.stringify(props.video));
+
+      setIsLoading(true);
+      if (actionType === "delete") await deleteVideoAction(formData);
+      setIsLoading(false);
+
+      return form.reset();
+    }
+
+    const result = VideoFormSchema.safeParse(inputs);
+
+    if (!result.success)
+      return toast.custom(() => <ErrorToast message="Invalid Form Data" />);
+
+    const video = {
+      ...props.video,
+      fileName: result.data.name,
+      isFullscreen: result.data.fullscreen,
+      size: `${result.data.width};${result.data.height}`,
+      isRandom: result.data.random,
+      position: `${result.data.x};${result.data.y}`,
+    };
+
+    formData.append("video", JSON.stringify(video));
 
     setIsLoading(true);
     if (actionType === "save") await updateVideoAction(formData);
-    if (actionType === "delete") await deleteVideoAction(formData);
     setIsLoading(false);
 
     form.reset();
@@ -58,14 +74,14 @@ export default function VideoForm(props: Readonly<Props>) {
       <TextInput
         name="name"
         placeholder="Your new name here..."
-        value={inputs.name as string}
-        handleChange={handleInputChange("name")}
+        value={String(inputs.name)}
+        handleChange={handleInputChange("name", "text")}
       >
         Button Name<span className="text-blue-500">:</span>
       </TextInput>
       <CheckboxInput
         name="fullscreen"
-        value={inputs.fullscreen as boolean}
+        value={Boolean(inputs.fullscreen)}
         handleChange={handleCheckboxChange("fullscreen")}
       >
         Fullscreen
@@ -74,8 +90,8 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="width"
           minValue={50}
-          value={inputs.width as string}
-          handleChange={handleInputChange("width")}
+          value={String(inputs.width)}
+          handleChange={handleInputChange("width", "number")}
           disabled={inputs.fullscreen as boolean}
         >
           Width <span className="text-neutral-500">(On Pixels)</span>
@@ -84,8 +100,8 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="height"
           minValue={50}
-          value={inputs.height as string}
-          handleChange={handleInputChange("height")}
+          value={String(inputs.height)}
+          handleChange={handleInputChange("height", "number")}
           disabled={inputs.fullscreen as boolean}
         >
           Width <span className="text-neutral-500">(On Pixels)</span>
@@ -94,7 +110,7 @@ export default function VideoForm(props: Readonly<Props>) {
       </div>
       <CheckboxInput
         name="random"
-        value={inputs.random as boolean}
+        value={Boolean(inputs.random)}
         handleChange={handleCheckboxChange("random")}
       >
         Random
@@ -103,8 +119,8 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="x"
           minValue={0}
-          value={inputs.x as string}
-          handleChange={handleInputChange("x")}
+          value={String(inputs.x)}
+          handleChange={handleInputChange("x", "number")}
           disabled={inputs.random as boolean}
         >
           X Position <span className="text-neutral-500">(On Pixels)</span>
@@ -113,8 +129,8 @@ export default function VideoForm(props: Readonly<Props>) {
         <NumberInput
           name="y"
           minValue={0}
-          value={inputs.y as string}
-          handleChange={handleInputChange("y")}
+          value={String(inputs.y)}
+          handleChange={handleInputChange("y", "number")}
           disabled={inputs.random as boolean}
         >
           Y Position <span className="text-neutral-500">(On Pixels)</span>

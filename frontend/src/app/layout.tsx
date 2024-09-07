@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Inconsolata } from "next/font/google";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Stream Board | Enhance your Stream with us",
@@ -24,6 +25,7 @@ export default function RootLayout(props: Readonly<Props>) {
     <html lang="en" className={`${GeistSans.variable} ${MonoFont.variable}`}>
       <body className="overflow-x-hidden font-sans text-neutral-50">
         {props.children}
+        <Toaster />
       </body>
     </html>
   );
